@@ -4,6 +4,7 @@ const app = express();
 
 const port = 5000;
 
+//route or endpoint
 app.get('/', (req, res) => {
     res.send('response from express');
 });
