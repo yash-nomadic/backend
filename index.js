@@ -1,8 +1,16 @@
 const express = require('express');
+const userRouter = require('./routers/userRouter');
+// const productRouter = require('/routers/productRouter');
 
 const app = express();
 
 const port = 5000;
+
+
+//middleware
+app.use('/user', userRouter);
+
+// app.use('/product', );
 
 //route or endpoint
 app.get('/', (req, res) => {
