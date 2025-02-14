@@ -1,29 +1,38 @@
-// const express = require('express');
+const express = require('express');
+const Model = require('../models/productModel');
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.get('/add', (req, res) => {
-//     res.send('response from product add')
-// });
+router.post('/add', (req, res) => {
+    console.log(req.body);
 
-// //getall
-// router.get('/getall', (req, res) => {
-//     res.send('response from product getall')
-// });
+    new Model(req.body).save()
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            res.status(500).json(err);
+        });
 
-// //getbyid
-// router.get('/getbyid', (req, res) => {
-//     res.send('response from product getbyid')
-// });
+});
 
-// //update
-// router.get('/update', (req, res) => {
-//     res.send('response from product update')
-// });
+//getall
+router.get('/getall', (req, res) => {
+    res.send('response from product getall')
+});
 
-// //delete
-// router.get('/delete', (req, res) => {
-//     res.send('response from product delete')
-// });
+//getbyid
+router.get('/getbyid', (req, res) => {
+    res.send('response from product getbyid')
+});
 
-// module.exports = router;
+//update
+router.get('/update', (req, res) => {
+    res.send('response from product update')
+});
+
+//delete
+router.get('/delete', (req, res) => {
+    res.send('response from product delete')
+});
+
+module.exports = router;
