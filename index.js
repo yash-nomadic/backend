@@ -1,6 +1,6 @@
 const express = require('express');
 const userRouter = require('./routers/userRouter');
-// const productRouter = require('/routers/productRouter');
+const productRouter = require('/routers/productRouter');
 
 const app = express();
 
@@ -10,6 +10,7 @@ const port = 5000;
 //middleware
 app.use(express.json());
 app.use('/user', userRouter);
+app,use('/product', productRouter);
  
 
 //new product middleware
