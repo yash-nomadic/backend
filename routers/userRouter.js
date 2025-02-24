@@ -3,6 +3,10 @@ const Model = require('../models/userModel');
 
 const router = express.Router();
 
+const jwt = require('jsonwebtoken');
+const verifyToken = require('../middlewares/verifyToken');
+require('dotenv').config();
+
 router.post('/add', (req, res) => {
     console.log(req.body);
 
@@ -75,16 +79,16 @@ router.get('/getbyid/:id', (req, res) => {
 
 //update
 router.put('/update/:id', (req, res) => {
-    
-    Model.findByIdAndUpdate(req.params.id, req.body, {new : true})
 
-    .then((result) => {
-        res.status(200).json(result);
-               
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).json(err); 
-    });
+    Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
+
+        .then((result) => {
+            res.status(200).json(result);
+
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 
 });
 
@@ -96,6 +100,40 @@ router.delete('/delete/:id', (req, res) => {
         }).catch((err) => {
             console.log(err);
             res.status(500).json(err);
+        });
+});
+
+
+router.post('/authenticate', (req, res) => {
+    Model.findOne(res.body)
+        .then((result) => {
+            if (result) {
+                // generate token
+
+                const { _id, name, email } = result;
+                const payload = { _id, name, email }
+
+                jwt.sign(
+                    payload,
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1d' },
+                    (err, token) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).json(err);
+                        } else {
+                            res.status(200).json({ token });
+                        }
+                    }
+                )
+
+            } else {
+                res.status(401).json({ message: 'Invalid Id or Password' })
+            }
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+
         });
 });
 
